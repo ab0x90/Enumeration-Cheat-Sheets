@@ -8,13 +8,10 @@ runas /netonly /user:Domain_Name\Domain_USER mmc
 ```
 
 Go to File > Add/Remove Snap-In
-
-![1](https://github.com/user-attachments/assets/dab131b2-e566-4afb-92c8-6ff766cb901e)
-
+***image for snapin
 
 If using from a system that is not domain joined, you will get an error that the specified domain does not exist or could not be contacted. Right click on the Root Domain folder and click "change domain".
-
-![2](https://github.com/user-attachments/assets/f27b1a85-0a39-4103-add0-f317e2a68b50)
+***image for change domain
 
 # Types of LDAP Authentication
 1. **Simple Authentication:** This includes anonymous authentication, unauthenticated authentication, and username/password authentication. Simple authentication means that a username and password create a BIND request to authenticate to the LDAP server.
@@ -73,6 +70,43 @@ Get-ADGroup -LDAPFilter '(member:1.2.840.113556.1.4.1941:=CN=Harry Jones,OU=Netw
 
 #Count of all users in an OU
 (Get-ADUser -SearchBase "OU=Employees,DC=domain,DC=local" -Filter *).count
+
+#Find all DCs
+Get-ADObject -LDAPFilter '(&(objectCategory=Computer)(userAccountControl:1.2.840.113556.1.4.803:=8192))' | select Name,ObjectGUID
+
+#Find all servers (non-DCs) in the domain
+ get-adobject -ldapfilter '(&(objectCategory=computer)(operatingSystem=*server*)(!(userAccountControl:1.2.840.113556.1.4.803:=8192)))' | select Name,ObjectClass,ObjectGUID
+
+#Find certificate authorities and publishers
+get-adobject -ldapfilter '(CN="Cert Publishers"*)'
+
+#Find all OUs
+get-adobject -ldapfilter '(objectCategory=organizationalUnit)'
+
+#Find all containers
+#Look for non-default AD containers.
+get-adobject -ldapfilter '(objectCategory=container)'
+
+#Find all unconstrained delegation
+get-adobject -ldapfilter '(&(objectClass=User)(msDS-AllowedToDelegateTo=*))'
+
+#Find RBCD
+get-adobject -ldapfilter '(msDS-AllowedToActOnBehalfOfOtherIdentity=*)'
+
+#Shadow Credentials
+get-adobject -ldapfilter '(msDS-KeyCredentialLink=*)'
+
+#Computer object with descriptions
+get-adobject -ldapfilter '(&(objectCategory=computer)(description=*))'
+
+#User accounts with SID History, may have access in another domain
+get-adobject -ldapfilter '(&(objectCategory=Person)(objectClass=User)(sidHistory=*))'
+
+#Generate list of user accounts
+get-adobject -ldapfilter '(&(objectCategory=Person)(objectClass=User)(samaccountname=*))'
+
+#Generate list of computer accounts
+get-adobject -ldapfilter '(&(objectClass=Computer)(samaccountname=*))'
 ```
 
 
