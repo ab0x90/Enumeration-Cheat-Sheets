@@ -8,10 +8,11 @@ runas /netonly /user:Domain_Name\Domain_USER mmc
 ```
 
 Go to File > Add/Remove Snap-In
-***image for snapin
+![1](https://github.com/user-attachments/assets/8bd07793-150f-469c-9018-77b8e0a7cfdd)
 
 If using from a system that is not domain joined, you will get an error that the specified domain does not exist or could not be contacted. Right click on the Root Domain folder and click "change domain".
-***image for change domain
+
+![2](https://github.com/user-attachments/assets/6fa0efcc-026c-47cc-b3ae-d829712fb8eb)
 
 # Types of LDAP Authentication
 1. **Simple Authentication:** This includes anonymous authentication, unauthenticated authentication, and username/password authentication. Simple authentication means that a username and password create a BIND request to authenticate to the LDAP server.
